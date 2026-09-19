@@ -50,9 +50,9 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
 if (BASE_PATH) {
-  app.use(BASE_PATH, express.static(path.join(__dirname, "/public")));
+  app.use(BASE_PATH, express.static(path.join(__dirname, "public")));
 }
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 
 const store = MongoStore.create({
@@ -116,7 +116,10 @@ app.use((req,res,next)=>{
 })
 
 
+app.get(["/favicon.ico", "/sw.js", "/service-worker.js"], (req, res) => res.status(204).end());
+
 const mainRouter = express.Router();
+mainRouter.get(["/favicon.ico", "/sw.js", "/service-worker.js"], (req, res) => res.status(204).end());
 
 mainRouter.use("/listing",listingRouter);
 mainRouter.use("/listing/:id/reviews",reviewRouter);
@@ -136,8 +139,6 @@ app.all(/.*/, (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error("Error occurred:", err);
-
   if (res.headersSent) {
     return next(err);
   }
@@ -147,6 +148,12 @@ app.use((err, req, res, next) => {
   }
 
   let { statusCode = 500, message = "Something went wrong!" } = err;
+
+  if (statusCode === 404) {
+    console.warn(`[404 Not Found] ${req.method} ${req.originalUrl}`);
+  } else {
+    console.error(`[${statusCode} Server Error] ${req.method} ${req.originalUrl}:`, err);
+  }
 
   res.status(statusCode).render("error.ejs", { message, basePath: BASE_PATH });
 });

@@ -4,32 +4,65 @@
   <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
     <div class="form-card">
       <div class="text-center mb-4">
-        <div class="badge bg-success-subtle text-success p-3 rounded-circle fs-3 mb-2">
+        <div
+          class="badge bg-success-subtle text-success p-3 rounded-circle fs-3 mb-2"
+        >
           <i class="fa-solid fa-arrow-right-to-bracket"></i>
         </div>
-        <h2 class="fw-bold">Welcome back to ReBuild<span style="color: var(--primary);">X</span></h2>
-        <p class="text-muted">Log in to manage your surplus materials or view saved items.</p>
+        <h2 class="fw-bold">
+          Welcome back to ReBuild<span style="color: var(--primary)">X</span>
+        </h2>
+        <p class="text-muted">
+          Log in to manage your surplus materials or view saved items.
+        </p>
       </div>
 
-      <form method="POST" action="<%= basePath %>/login" class="needs-validation" novalidate>
+      <form
+        method="POST"
+        action="<%= basePath %>/login"
+        class="needs-validation"
+        novalidate
+      >
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" name="username" id="username" required placeholder="Enter your username" class="form-control">
+          <input
+            type="text"
+            name="username"
+            id="username"
+            required
+            placeholder="Enter your username"
+            class="form-control"
+          />
           <div class="invalid-feedback">Please enter your username.</div>
         </div>
 
         <div class="mb-4">
           <label for="password" class="form-label">Password</label>
-          <input type="password" name="password" id="password" required placeholder="Enter your password" class="form-control">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            required
+            placeholder="Enter your password"
+            class="form-control"
+          />
           <div class="invalid-feedback">Please enter your password.</div>
         </div>
 
-        <button class="btn btn-primary-action w-100 py-2 fs-6">
-          Log in to ReBuildX
+        <button
+          class="btn btn-primary-action py-2 fs-6 d-block mx-auto"
+          style="border: 1px solid black; width: 200px"
+        >
+          Log in
         </button>
 
         <div class="text-center mt-3 small text-muted">
-          Don't have an account? <a href="<%= basePath %>/signup" class="fw-bold text-success text-decoration-none">Sign up</a>
+          Don't have an account?
+          <a
+            href="<%= basePath %>/signup"
+            class="fw-bold text-success text-decoration-none"
+            >Sign up</a
+          >
         </div>
       </form>
     </div>
