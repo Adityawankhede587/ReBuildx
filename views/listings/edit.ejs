@@ -1,56 +1,138 @@
 <% layout("/layouts/boilerplate") %>
-    
-    <div class="row mt-3">
-        <div class="col-8 offset-2">
 
+<div class="row mt-4 mb-5">
+  <div class="col-lg-8 offset-lg-2">
+    <div class="form-card">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <div class="badge bg-primary-subtle text-primary p-2 rounded-circle fs-5">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+        <div>
+          <h3 class="fw-bold mb-0">Edit Material Listing</h3>
+          <p class="text-muted small mb-0">Update quantities, pricing, or specifications for this surplus material.</p>
+        </div>
+      </div>
 
-            <h3>Edit your Listing</h3>
-            <form method="post" action="/listing/<%= listing._id %>?_method=PUT  " novalidate class="needs-validation" enctype="multipart/form-data">
+      <hr class="mb-4">
 
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" required value="<%= listing.title %>" class="form-control" name="listing[title]">
-                <div class="invalid-feedback">Title looks good</div>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" required name="listing[description]"><%= listing.description %></textarea>
-                <div class="invalid-feedback">Please Enter a Short Description</div>
-                </div>
-                <div class="mb-3">
-                    Original Listing Image <br>
-<img src="<%= originalImageUrl %>" alt="listing_image" class="edit-preview">                </div>
-
-
-                <div class="mb-3">
-                    <label for="image" class="form-label">Uplode image</label>
-                    <input type="file"  name="listing[image]" class="form-control"  >
-             
-                </div>
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">price</label>
-                        <input type="number" required value="<%= listing.price %>" class="form-control" name="listing[price]">
-                    <div class="invalid-feedback">Please enter valid price</div>
-                    </div>
-                    <div class="mb-3 col-md-8">
-                        <label for="country" class="form-label">Country</label>
-                        <input type="text" required class="form-control" value="<%= listing.country %>" name="listing[country]">
-                   <div class="invalid-feedback">Please Enter valid country</div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" required value="<%= listing.location %>" class="form-control" name="listing[location]">
-                <div class="invalid-feedback"> Please Enter valid location</div>
-                </div>
-
-
-
-                <button class="btn btn-dark edit-btn mt-3">Edit</button>
-                
-            </form>
+      <form method="POST" action="<%= basePath %>/listing/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Material Title <span class="text-danger">*</span></label>
+          <input type="text" id="title" name="listing[title]" required value="<%= listing.title %>" class="form-control">
+          <div class="invalid-feedback">Please enter a title for the material.</div>
         </div>
 
+        <!-- Category & Condition -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="category" class="form-label">Material Category <span class="text-danger">*</span></label>
+            <select id="category" name="listing[category]" class="form-select" required>
+              <% const categories = ["Cement", "Steel & Iron", "Bricks & Blocks", "Tiles & Marble", "Doors & Windows", "Pipes & Plumbing", "Electrical", "Paints & Finishes", "Wood & Timber", "Other"]; %>
+              <% for (let cat of categories) { %>
+                <option value="<%= cat %>" <%= listing.category === cat ? 'selected' : '' %>><%= cat %></option>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="condition" class="form-label">Material Condition <span class="text-danger">*</span></label>
+            <select id="condition" name="listing[condition]" class="form-select" required>
+              <% const conditions = ["Brand New / Surplus", "Like New / Unused", "Gently Used / Salvaged", "Scrap / Recyclable"]; %>
+              <% for (let cond of conditions) { %>
+                <option value="<%= cond %>" <%= listing.condition === cond ? 'selected' : '' %>><%= cond %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quantity & Measurement Unit -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="quantity" class="form-label">Quantity Available <span class="text-danger">*</span></label>
+            <input type="number" id="quantity" name="listing[quantity]" min="1" required value="<%= listing.quantity %>" class="form-control">
+            <div class="invalid-feedback">Please enter valid quantity (minimum 1).</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="unit" class="form-label">Measurement Unit <span class="text-danger">*</span></label>
+            <select id="unit" name="listing[unit]" class="form-select" required>
+              <% const units = ["Bags", "Pieces", "Sq. Ft.", "Tonnes", "Kg", "Meters", "Liters", "Units", "Lots"]; %>
+              <% for (let u of units) { %>
+                <option value="<%= u %>" <%= listing.unit === u ? 'selected' : '' %>><%= u %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="price" class="form-label">Your Selling Price (&#8377; per unit) <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">&#8377;</span>
+              <input type="number" id="price" class="form-control" required value="<%= listing.price %>" name="listing[price]" min="0">
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="originalPrice" class="form-label">Original Retail Price (&#8377; per unit)</label>
+            <div class="input-group">
+              <span class="input-group-text">&#8377;</span>
+              <input type="number" id="originalPrice" class="form-control" value="<%= listing.originalPrice || 0 %>" name="listing[originalPrice]" min="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- Location & Country -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-8">
+            <label for="location" class="form-label">Pickup Site / Location <span class="text-danger">*</span></label>
+            <input type="text" id="location" name="listing[location]" required value="<%= listing.location %>" class="form-control">
+          </div>
+
+          <div class="col-md-4">
+            <label for="country" class="form-label">Country / State</label>
+            <input type="text" id="country" name="listing[country]" value="<%= listing.country %>" class="form-control">
+          </div>
+        </div>
+
+        <!-- Contact Phone & Contact Email -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="contactPhone" class="form-label">Contact Phone / WhatsApp</label>
+            <input type="text" id="contactPhone" name="listing[contactPhone]" value="<%= listing.contactPhone || '' %>" class="form-control">
+          </div>
+
+          <div class="col-md-6">
+            <label for="contactEmail" class="form-label">Contact Email</label>
+            <input type="email" id="contactEmail" name="listing[contactEmail]" value="<%= listing.contactEmail || '' %>" class="form-control">
+          </div>
+        </div>
+
+        <!-- Current Image Preview & Upload New Image -->
+        <div class="mb-3">
+          <label class="form-label d-block">Current Material Photo</label>
+          <% if (listing.image && listing.image.url) { %>
+            <img src="<%= originalImageUrl %>" alt="Material preview" class="edit-preview mb-2">
+          <% } %>
+          <label for="image" class="form-label d-block mt-2">Upload New Photo (Optional)</label>
+          <input type="file" id="image" name="listing[image]" class="form-control" accept="image/*">
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <label for="description" class="form-label">Material Details & Pickup Instructions <span class="text-danger">*</span></label>
+          <textarea id="description" name="listing[description]" rows="4" required class="form-control"><%= listing.description %></textarea>
+        </div>
+
+        <div class="d-flex gap-3">
+          <button class="btn btn-primary-action px-4 py-2">
+            <i class="fa-solid fa-save me-1"></i> Save Changes
+          </button>
+          <a href="<%= basePath %>/listing/<%= listing._id %>" class="btn btn-outline-secondary px-4 py-2">Cancel</a>
+        </div>
+      </form>
     </div>
+  </div>
+</div>

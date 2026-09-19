@@ -1,47 +1,159 @@
 <% layout("/layouts/boilerplate") %>
 
-    <h3 class="col-6 offset-3">Create A new listing</h3>
-    <div class="row mt-3">
-        <div class="col-6 offset-3">
-            <form method="post" action="/listing" novalidate class="needs-validation" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" name="listing[title]" required placeholder="enter a catchy title" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" required class="form-control"></textarea>
-                <div class="invalid-feedback">Please Enter a Short Description</div>
-                </div>
-              
-                 <div class="mb-3">
-                    <label for="image" class="form-label">Uplode Listing image</label>
-                    <input type="file" name="listing[image]" class="form-control">
-                </div>
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">price</label>
-                        <input  class="form-control" required placeholder="1200" name="listing[price]">
-                         <div class="invalid-feedback">Price should be Valid</div>
-
-                    </div>
-                    <div class="mb-3 col-md-8">
-                        <label for="country" class="form-label">Country</label>
-                        <input type="text" name="listing[country]" required placeholder="India" class="form-control">
-                        <div class="invalid-feedback">Country Should be Valid</div>
-
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" name="listing[location]" required placeholder="jaipur,Rajasthan" class="form-control">
-                    <div class="invalid-feedback">Location should be Valid</div>
-
-                </div>
-                <button class="btn btn-dark add-btn mt-3">Add</button>
-               
-            </form>
-
+<div class="row mt-4 mb-5">
+  <div class="col-lg-8 offset-lg-2">
+    <div class="form-card">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <div class="badge bg-success-subtle text-success p-2 rounded-circle fs-5">
+          <i class="fa-solid fa-plus"></i>
         </div>
+        <div>
+          <h3 class="fw-bold mb-0">List Surplus Construction Material</h3>
+          <p class="text-muted small mb-0">Connect with nearby buyers and prevent material waste.</p>
+        </div>
+      </div>
+
+      <hr class="mb-4">
+
+      <form method="POST" action="<%= basePath %>/listing" novalidate class="needs-validation" enctype="multipart/form-data">
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Material Title <span class="text-danger">*</span></label>
+          <input type="text" id="title" name="listing[title]" required placeholder="e.g. 50 Bags UltraTech 53 Grade Cement / Tata Tiscon 12mm TMT Steel" class="form-control">
+          <div class="invalid-feedback">Please enter a descriptive title for the material.</div>
+        </div>
+
+        <!-- Category & Condition -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="category" class="form-label">Material Category <span class="text-danger">*</span></label>
+            <select id="category" name="listing[category]" class="form-select" required>
+              <option value="" disabled selected>Select Category</option>
+              <option value="Cement">Cement</option>
+              <option value="Steel & Iron">Steel & Iron</option>
+              <option value="Bricks & Blocks">Bricks & Blocks</option>
+              <option value="Tiles & Marble">Tiles & Marble</option>
+              <option value="Doors & Windows">Doors & Windows</option>
+              <option value="Pipes & Plumbing">Pipes & Plumbing</option>
+              <option value="Electrical">Electrical</option>
+              <option value="Paints & Finishes">Paints & Finishes</option>
+              <option value="Wood & Timber">Wood & Timber</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="invalid-feedback">Please select a category.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="condition" class="form-label">Material Condition <span class="text-danger">*</span></label>
+            <select id="condition" name="listing[condition]" class="form-select" required>
+              <option value="Brand New / Surplus" selected>Brand New / Surplus (Unopened/Unused)</option>
+              <option value="Like New / Unused">Like New / Unused</option>
+              <option value="Gently Used / Salvaged">Gently Used / Salvaged</option>
+              <option value="Scrap / Recyclable">Scrap / Recyclable</option>
+            </select>
+            <div class="invalid-feedback">Please select the condition.</div>
+          </div>
+        </div>
+
+        <!-- Quantity & Measurement Unit -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="quantity" class="form-label">Quantity Available <span class="text-danger">*</span></label>
+            <input type="number" id="quantity" name="listing[quantity]" min="1" required placeholder="50" class="form-control">
+            <div class="invalid-feedback">Please enter available quantity (minimum 1).</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="unit" class="form-label">Measurement Unit <span class="text-danger">*</span></label>
+            <select id="unit" name="listing[unit]" class="form-select" required>
+              <option value="Bags">Bags</option>
+              <option value="Pieces">Pieces</option>
+              <option value="Sq. Ft.">Sq. Ft.</option>
+              <option value="Tonnes">Tonnes</option>
+              <option value="Kg">Kg</option>
+              <option value="Meters">Meters</option>
+              <option value="Liters">Liters</option>
+              <option value="Units" selected>Units</option>
+              <option value="Lots">Lots</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pricing: Discounted vs Original -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="price" class="form-label">Your Selling Price (&#8377; per unit) <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">&#8377;</span>
+              <input type="number" id="price" class="form-control" required placeholder="330" name="listing[price]" min="0">
+            </div>
+            <div class="invalid-feedback">Please enter a valid selling price.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="originalPrice" class="form-label">Original Retail Price (&#8377; per unit) <span class="text-muted small">(Optional)</span></label>
+            <div class="input-group">
+              <span class="input-group-text">&#8377;</span>
+              <input type="number" id="originalPrice" class="form-control" placeholder="420" name="listing[originalPrice]" min="0">
+            </div>
+            <small class="text-muted">Used to highlight buyer savings percentage.</small>
+          </div>
+        </div>
+
+        <!-- Location & Country -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-8">
+            <label for="location" class="form-label">Pickup Site / Location <span class="text-danger">*</span></label>
+            <input type="text" id="location" name="listing[location]" required placeholder="e.g. Andheri East, Mumbai / Whitefield, Bengaluru" class="form-control">
+            <div class="invalid-feedback">Please enter pickup location or area.</div>
+          </div>
+
+          <div class="col-md-4">
+            <label for="country" class="form-label">Country / State</label>
+            <input type="text" id="country" name="listing[country]" value="India" class="form-control">
+          </div>
+        </div>
+
+        <!-- Contact Phone & Contact Email -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="contactPhone" class="form-label">Contact Phone / WhatsApp <span class="text-muted small">(Optional)</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+              <input type="text" id="contactPhone" name="listing[contactPhone]" placeholder="+91 98200 12345" class="form-control">
+            </div>
+            <small class="text-muted">Enables one-click WhatsApp inquiries.</small>
+          </div>
+
+          <div class="col-md-6">
+            <label for="contactEmail" class="form-label">Contact Email <span class="text-muted small">(Optional)</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+              <input type="email" id="contactEmail" name="listing[contactEmail]" placeholder="seller@rebuildx.com" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload Material Photo <span class="text-muted small">(Recommended for faster sale)</span></label>
+          <input type="file" id="image" name="listing[image]" class="form-control" accept="image/*">
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <label for="description" class="form-label">Material Details & Pickup Instructions <span class="text-danger">*</span></label>
+          <textarea id="description" name="listing[description]" rows="4" required class="form-control" placeholder="Mention brand, storage condition, manufacturing date, access for loading trucks, or reason for surplus..."></textarea>
+          <div class="invalid-feedback">Please provide details regarding the surplus material.</div>
+        </div>
+
+        <div class="d-flex gap-3">
+          <button class="btn btn-primary-action px-4 py-2">
+            <i class="fa-solid fa-check me-1"></i> Post Material Listing
+          </button>
+          <a href="<%= basePath %>/listing" class="btn btn-outline-secondary px-4 py-2">Cancel</a>
+        </div>
+      </form>
     </div>
+  </div>
+</div>

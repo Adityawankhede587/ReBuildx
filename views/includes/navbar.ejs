@@ -1,62 +1,74 @@
-<style>
-    .search-btn{
-background-color: #fe424d;
-color: #fff;
-border-radius: 25px;
-padding: 0 1rem 0 1rem;
-    }
-    .btn-search:hover{
-        background-color: #fe424d;
-        color: #fff;
-    }
-    .search-btn i{
-        display: inline;
-        margin-right: 0.5em; ;
-    }
-    .search-inp{
-        border-radius: 25px;
-        padding: 0.5rem 3rem 0.5rem 3rem;
-        font-size: 1rem;
-    }
+<nav class="navbar navbar-expand-lg border-bottom sticky-top">
+  <div class="container-fluid px-lg-4">
+    <!-- Brand Logo -->
+    <a class="navbar-brand" href="<%= basePath %>/listing">
+      <i class="fa-solid fa-cubes-stacked"></i>
+      <span>ReBuild<span style="color: var(--primary);">X</span></span>
+      <span class="brand-badge">Reuse Marketplace</span>
+    </a>
 
-</style>
-
-
-
-
-
-
-
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/listing"><i class="fa-solid fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#rebuildNavbar" aria-controls="rebuildNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
 
-        <a class="nav-link" href="/listing">Explore</a>
-      </div>
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-          <input class="form-control me-2 search-inp" type="search" placeholder="Search destination"   />
-          <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+    <div class="collapse navbar-collapse mt-2 mt-lg-0" id="rebuildNavbar">
+      <!-- Search Form -->
+      <div class="mx-auto my-2 my-lg-0 w-100 d-flex justify-content-center">
+        <form class="search-container" action="<%= basePath %>/listing" method="GET">
+          <input
+            class="form-control search-inp"
+            type="search"
+            name="search"
+            placeholder="Search cement, steel, bricks, tiles..."
+            value="<%= typeof search !== 'undefined' ? search : '' %>"
+            aria-label="Search materials"
+          />
+          <button class="search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
         </form>
       </div>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listing/new">Airbnb your home</a>
 
-        <% if(! currUser){ %>
-        <a class="nav-link " href="/signup"><b>Signup</b></a>
-        <a class="nav-link" href="/login"><b>login</b></a>
-        <%} %>
-        <% if( currUser){ %>
-        <a class="nav-link" href="/logout"><b>logout</b></a>
+      <!-- Action Nav Links -->
+      <div class="navbar-nav align-items-lg-center gap-2">
+        <a class="btn-post-material text-decoration-none" href="<%= basePath %>/listing/new">
+          <i class="fa-solid fa-plus-circle"></i>
+          <span>Post Surplus</span>
+        </a>
+
+        <% if (!currUser) { %>
+          <a class="nav-link" href="<%= basePath %>/login">Log in</a>
+          <a class="btn btn-outline-dark rounded-pill px-3 py-1 fw-bold" href="<%= basePath %>/signup">Sign up</a>
+        <% } else { %>
+          <a class="nav-link position-relative d-flex align-items-center gap-1" href="<%= basePath %>/wishlist" title="My Saved Materials">
+            <i class="fa-solid fa-heart text-danger"></i>
+            <span class="d-lg-none">Saved Materials</span>
+          </a>
+
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="badge bg-light text-dark border p-2 rounded-circle">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              <span class="fw-semibold"><%= currUser.username %></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+              <li>
+                <div class="dropdown-header text-muted small">
+                  Signed in as <strong><%= currUser.role || 'Member' %></strong>
+                </div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="<%= basePath %>/wishlist"><i class="fa-solid fa-heart text-danger me-2"></i>Saved Materials</a></li>
+              <li><a class="dropdown-item" href="<%= basePath %>/listing/new"><i class="fa-solid fa-plus-circle text-success me-2"></i>Post Material</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="<%= basePath %>/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Log out</a></li>
+            </ul>
+          </div>
         <% } %>
       </div>
     </div>
-
-
   </div>
 </nav>

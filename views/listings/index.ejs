@@ -1,133 +1,178 @@
 <% layout("/layouts/boilerplate") %>
-  <style>
-    #filter {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-    }
 
-    .filter {
-      text-align: center;
-      margin-right: 2rem;
-      margin-top: 2rem;
-      opacity: 0.7;
+<!-- Hero Banner -->
+<div class="hero-banner">
+  <div class="row align-items-center">
+    <div class="col-lg-8">
+      <h1 class="hero-title">
+        Build More. <span style="color: #10b981;">Waste Less.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Connecting contractors, builders, and homeowners to purchase surplus & reusable construction materials at discounted prices.
+      </p>
 
-    }
-
-    .filter:hover {
-      opacity: 1;
-      cursor: pointer;
-    }
-
-    .filter p {
-      font-size: 0.8rem;
-    }
-
-    .tax-info {
-      display: none;
-    }
-    .tax-toggle{
-      border: 1px solid black;
-      border-radius: 1rem;
-      height: 3.25rem;
-      padding: 1rem;
-      margin-left: 5rem;
-      display: flex;
-      align-items: center;
-    }
-
-
-  </style>
-  <div id="filter">
-    <div class="filter">
-      <div><i class="fa-solid fa-fire"></i></div>
-      <p>Trending</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-bed"></i></div>
-      <p>Rooms</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-mountain-city"></i></div>
-      <p>Iconic Cities</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-mountain"></i></div>
-      <p>Mountains</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-brands  fa-fort-awesome"></i></div>
-      <p>Castles</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-person-swimming"></i></div>
-      <p>Amazing Pools</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-campground"></i></div>
-      <p>Camping</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-brands  fa-cow"></i></div>
-      <p>Farms</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-snowflake"></i></div>
-      <p>Arctic</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-igloo"></i></div>
-      <p>Domes</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-sailboat"></i></div>
-      <p>Boats</p>
-    </div>
-
-    <div class="tax-toggle">
-      <div class="form-check-reverse form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-        <label class="form-check-label" for="switchCheckDefault">Display after total taxes</label>
+      <div class="hero-stats">
+        <div class="hero-stat-pill">
+          <i class="fa-solid fa-percent"></i>
+          <span>Save up to 60% on Building Costs</span>
+        </div>
+        <div class="hero-stat-pill">
+          <i class="fa-solid fa-leaf"></i>
+          <span>Eco-Friendly Material Reuse</span>
+        </div>
+        <div class="hero-stat-pill">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Local Site Pickup</span>
+        </div>
       </div>
     </div>
+    <div class="col-lg-4 text-center text-lg-end d-none d-lg-block">
+      <i class="fa-solid fa-trowel-bricks" style="font-size: 8rem; color: rgba(255,255,255,0.08);"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Category Filters -->
+<div class="category-filter-wrapper d-flex align-items-center">
+  <a href="<%= basePath %>/listing" class="category-pill <%= (!activeCategory || activeCategory === 'All') ? 'active' : '' %>">
+    <i class="fa-solid fa-layer-group"></i> All Materials
+  </a>
+  <a href="<%= basePath %>/listing?category=Cement" class="category-pill <%= activeCategory === 'Cement' ? 'active' : '' %>">
+    <i class="fa-solid fa-box-archive"></i> Cement
+  </a>
+  <a href="<%= basePath %>/listing?category=Steel%20%26%20Iron" class="category-pill <%= activeCategory === 'Steel & Iron' ? 'active' : '' %>">
+    <i class="fa-solid fa-bars-staggered"></i> Steel & Iron
+  </a>
+  <a href="<%= basePath %>/listing?category=Bricks%20%26%20Blocks" class="category-pill <%= activeCategory === 'Bricks & Blocks' ? 'active' : '' %>">
+    <i class="fa-solid fa-cubes"></i> Bricks & Blocks
+  </a>
+  <a href="<%= basePath %>/listing?category=Tiles%20%26%20Marble" class="category-pill <%= activeCategory === 'Tiles & Marble' ? 'active' : '' %>">
+    <i class="fa-solid fa-table-cells"></i> Tiles & Marble
+  </a>
+  <a href="<%= basePath %>/listing?category=Doors%20%26%20Windows" class="category-pill <%= activeCategory === 'Doors & Windows' ? 'active' : '' %>">
+    <i class="fa-solid fa-door-open"></i> Doors & Windows
+  </a>
+  <a href="<%= basePath %>/listing?category=Pipes%20%26%20Plumbing" class="category-pill <%= activeCategory === 'Pipes & Plumbing' ? 'active' : '' %>">
+    <i class="fa-solid fa-wrench"></i> Pipes & Plumbing
+  </a>
+  <a href="<%= basePath %>/listing?category=Electrical" class="category-pill <%= activeCategory === 'Electrical' ? 'active' : '' %>">
+    <i class="fa-solid fa-bolt"></i> Electrical
+  </a>
+  <a href="<%= basePath %>/listing?category=Paints%20%26%20Finishes" class="category-pill <%= activeCategory === 'Paints & Finishes' ? 'active' : '' %>">
+    <i class="fa-solid fa-paint-roller"></i> Paints & Finishes
+  </a>
+  <a href="<%= basePath %>/listing?category=Wood%20%26%20Timber" class="category-pill <%= activeCategory === 'Wood & Timber' ? 'active' : '' %>">
+    <i class="fa-solid fa-tree"></i> Wood & Timber
+  </a>
+</div>
+
+<!-- Header / Result count info -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="fw-bold mb-0">
+      <% if (search) { %>
+        Search Results for "<%= search %>"
+      <% } else if (activeCategory && activeCategory !== 'All') { %>
+        <%= activeCategory %> Surplus
+      <% } else { %>
+        Available Surplus Materials
+      <% } %>
+    </h3>
+    <small class="text-muted"><%= allListings.length %> materials listed near you</small>
   </div>
 
+  <% if (search || (activeCategory && activeCategory !== 'All')) { %>
+    <a href="<%= basePath %>/listing" class="btn btn-sm btn-outline-secondary rounded-pill">
+      <i class="fa-solid fa-xmark me-1"></i> Clear Filters
+    </a>
+  <% } %>
+</div>
 
+<!-- Listings Cards Grid -->
+<% if (allListings.length === 0) { %>
+  <div class="text-center py-5 bg-white rounded-4 border my-4">
+    <i class="fa-solid fa-box-open text-muted mb-3" style="font-size: 3.5rem;"></i>
+    <h4 class="fw-bold">No Surplus Materials Found</h4>
+    <p class="text-muted">We couldn't find any materials matching your filter or search query.</p>
+    <a href="<%= basePath %>/listing" class="btn btn-primary-action me-2">Browse All Materials</a>
+    <a href="<%= basePath %>/listing/new" class="btn btn-outline-dark">List Your Surplus Material</a>
+  </div>
+<% } else { %>
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+    <% for (let listing of allListings) { 
+        let discount = 0;
+        if (listing.originalPrice && listing.originalPrice > listing.price) {
+          discount = Math.round(((listing.originalPrice - listing.price) / listing.originalPrice) * 100);
+        }
+        let isSaved = false;
+        if (currUser && currUser.wishlist) {
+          isSaved = currUser.wishlist.some(wId => wId.toString() === listing._id.toString());
+        }
+    %>
+      <div class="col">
+        <div class="card material-card">
+          <!-- Card Image & Floating Badges -->
+          <div class="card-img-wrapper">
+            <img src="<%= listing.image ? listing.image.url : 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=60' %>" class="material-img" alt="<%= listing.title %>">
+            
+            <span class="condition-badge">
+              <i class="fa-solid fa-shield-halved me-1"></i><%= listing.condition || 'Surplus' %>
+            </span>
 
-  <h1>Listing</h1>
-  <div class="row row-cols-lg-3 row-cols-md-2 row-clos-sm-1">
-    <% for( let listing of allListings){ %>
-      <a href="/listing/<%= listing._id %>" class="listing-link">
+            <% if (discount > 0) { %>
+              <span class="discount-badge">
+                <%= discount %>% OFF
+              </span>
+            <% } %>
 
-        <div class="card col listing-card">
-          <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem">
-          <div class="card-img-overlay"></div>
-          <div class="card-body">
-            <p class="card-text">
-              <b>
+            <% if (currUser) { %>
+              <form method="POST" action="<%= basePath %>/listing/<%= listing._id %>/wishlist" class="d-inline">
+                <button type="submit" class="wishlist-btn-corner <%= isSaved ? 'active' : '' %>" title="<%= isSaved ? 'Remove from Saved' : 'Save Material' %>">
+                  <i class="<%= isSaved ? 'fa-solid fa-heart' : 'fa-regular fa-heart' %>"></i>
+                </button>
+              </form>
+            <% } %>
+          </div>
+
+          <!-- Card Content -->
+          <div class="material-card-body">
+            <div class="material-category-tag">
+              <%= listing.category || 'Surplus' %>
+            </div>
+
+            <a href="<%= basePath %>/listing/<%= listing._id %>" class="listing-card-link">
+              <h5 class="material-card-title" title="<%= listing.title %>">
                 <%= listing.title %>
-              </b> <br>
-              &#8377;
-              <%= listing.price !=null ? listing.price.toLocaleString("en-IN") : "Price not available" %>
-                /night <i class="tax-info">&nbsp; &nbsp;+18% GST</i>
-            </p>
+              </h5>
+            </a>
+
+            <div class="material-specs-inline">
+              <span class="spec-badge">
+                <i class="fa-solid fa-boxes-stacked me-1"></i><%= listing.quantity %> <%= listing.unit || 'Units' %>
+              </span>
+              <span class="text-muted small">Available</span>
+            </div>
+
+            <div class="location-text">
+              <i class="fa-solid fa-location-dot text-danger"></i>
+              <span class="text-truncate"><%= listing.location %>, <%= listing.country %></span>
+            </div>
+
+            <div class="price-section">
+              <div>
+                <span class="price-main">&#8377;<%= listing.price != null ? listing.price.toLocaleString("en-IN") : "0" %></span>
+                <span class="price-unit">/ <%= listing.unit ? listing.unit.slice(0, -1) : 'unit' %></span>
+                <% if (listing.originalPrice && listing.originalPrice > listing.price) { %>
+                  <span class="price-original">&#8377;<%= listing.originalPrice.toLocaleString("en-IN") %></span>
+                <% } %>
+              </div>
+              <a href="<%= basePath %>/listing/<%= listing._id %>" class="btn btn-sm btn-outline-dark rounded-pill fw-semibold">
+                Details
+              </a>
+            </div>
           </div>
         </div>
-      </a>
-      <%} %>
+      </div>
+    <% } %>
   </div>
-
-  <script>
-    let taxSwitch = document.getElementById("switchCheckDefault");
-    taxSwitch.addEventListener("click", () => {
-      let taxInfo = document.getElementsByClassName("tax-info");
-      for (info of taxInfo) {
-        if (info.style.display != "inline") {
-          info.style.display = "inline";
-        } else {
-          info.style.display = "none";
-        }
-      }
-
-    });
-  </script>
+<% } %>

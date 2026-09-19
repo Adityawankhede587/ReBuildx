@@ -1,6 +1,4 @@
-if(process.env.NODE_ENV != "production"){
-  require("dotenv").config();
-}
+require("dotenv").config();
 
 
 const PORT = process.env.PORT || 3001;
@@ -40,12 +38,20 @@ async function main() {
   await mongoose.connect(dbUrl);
 }
 
+const BASE_PATH = (process.env.BASE_PATH || "").replace(/\/+$/, "");
+
+app.locals.basePath = BASE_PATH;
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
+
+if (BASE_PATH) {
+  app.use(BASE_PATH, express.static(path.join(__dirname, "/public")));
+}
 app.use(express.static(path.join(__dirname, "/public")));
 
 
@@ -57,7 +63,7 @@ const store = MongoStore.create({
   touchAfter: 24*3600,
 });
 
-store.on("error",() =>{
+store.on("error",(err) =>{
   console.log("ERROR in MONGO SESSION STORE",err);
 })
 
@@ -73,11 +79,6 @@ const sessionOption ={
   }
 
 }
-// app.get("/", (req, res) => {
-//   res.send("working");
-// });
-
-
 
 app.use(session(sessionOption));
 
@@ -96,47 +97,50 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req,res,next)=>{
+  res.locals.basePath = BASE_PATH;
   res.locals.success= req.flash("success");
   res.locals.error= req.flash("error");
   res.locals.currUser = req.user;
+
+  const origRedirect = res.redirect.bind(res);
+  res.redirect = function (first, second) {
+    let url = typeof first === "number" ? second : first;
+    let status = typeof first === "number" ? first : null;
+    if (BASE_PATH && typeof url === "string" && url.startsWith("/") && !url.startsWith(BASE_PATH)) {
+      url = `${BASE_PATH}${url}`;
+    }
+    return status ? origRedirect(status, url) : origRedirect(url);
+  };
 
   next();
 })
 
 
-// app.get("/demouser",async (req,res) =>{
-//   let fakeUser = new User({
-//     email:"aditya@gmail.com",
-//     username:"Aditya",
-//   })
-//    let registeredUser = await User.register(fakeUser,"helloWorld");
-//    res.send(registeredUser);
-// })
+const mainRouter = express.Router();
 
-app.use("/listing",listingRouter);
-app.use("/listing/:id/reviews",reviewRouter);
-app.use("/",userRouter);
+mainRouter.use("/listing",listingRouter);
+mainRouter.use("/listing/:id/reviews",reviewRouter);
+mainRouter.use("/",userRouter);
 
-app.get("/", (req, res) => {
-  res.redirect("/listing");
+mainRouter.get("/", (req, res) => {
+  res.redirect(`${BASE_PATH}/listing`);
 });
 
-app.use((req, res, next) => {
-  console.log("REQUEST:", req.method, req.originalUrl);
-  next();
-});
-
-app.all(/.*/, (req, res, next) => {
-  console.log("404 URL:", req.originalUrl);
-  next(new ExpressError(404, "Page Not Found"));
-});
+if (BASE_PATH) {
+  app.use(BASE_PATH, mainRouter);
+}
+app.use("/", mainRouter);
 
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.error("Error occurred:", err);
+
+  if (res.headersSent) {
+    return next(err);
+  }
 
   if (err.name === "ValidationError") {
     err.statusCode = 400;
@@ -144,7 +148,7 @@ app.use((err, req, res, next) => {
 
   let { statusCode = 500, message = "Something went wrong!" } = err;
 
-  res.status(statusCode).render("error.ejs", { message });
+  res.status(statusCode).render("error.ejs", { message, basePath: BASE_PATH });
 });
 
 

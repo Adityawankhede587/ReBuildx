@@ -1,10 +1,9 @@
 const express = require("express");
-const { route } = require("./listings");
 const router = express.Router();
 const User = require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const passport = require("passport");
-const { saveRedirectUrl } = require("../middleware.js");
+const { saveRedirectUrl, isLoggedIn } = require("../middleware.js");
 
 const userController = require("../Controllers/users.js");
 
@@ -22,9 +21,11 @@ router
       failureRedirect: "/login",
       failureFlash: true,
     }),
-    userController.login,
+    userController.login
   );
 
 router.get("/logout", userController.logout);
+
+router.get("/wishlist", isLoggedIn, wrapAsync(userController.getWishlist));
 
 module.exports = router;

@@ -1,31 +1,48 @@
+require("dotenv").config({ path: "../.env" });
 const mongoose = require("mongoose");
 const initData = require("./data");
 const Listing = require("../models/listing");
-const { init } = require("../models/review");
+const User = require("../models/user");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
-.then(() =>{
-    console.log("connected to DB succesfully");
-})
-.catch((err) =>{
+  .then(() => {
+    console.log("Connected to DB successfully for seeding");
+    return initDB();
+  })
+  .then(() => {
+    console.log("Database initialized with ReBuildX surplus materials data!");
+    process.exit(0);
+  })
+  .catch((err) => {
     console.log(err);
-});
+    process.exit(1);
+  });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+  await mongoose.connect(dbUrl);
 }
 
+const initDB = async () => {
+  await Listing.deleteMany({});
 
-const initDB = async () =>{
-    await Listing.deleteMany({});
-     initData.data = initData.data.map((obj) =>({
-        ...obj,
-        owner:"6a732d480588d92f7c9fb8e2",
-    }));
-    await Listing.insertMany(initData.data);
-    console.log("data was intialised");
-    
-}
-initDB();
+  // Find a default user or create one if none exists
+  let defaultUser = await User.findOne({});
+  if (!defaultUser) {
+    const demoUser = new User({
+      email: "contractor@rebuildx.com",
+      username: "ReBuildX_Partner",
+      phone: "+91 98200 12345",
+      role: "Contractor",
+    });
+    defaultUser = await User.register(demoUser, "password123");
+  }
+
+  const sampleData = initData.data.map((obj) => ({
+    ...obj,
+    owner: defaultUser._id,
+  }));
+
+  await Listing.insertMany(sampleData);
+};
