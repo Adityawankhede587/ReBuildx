@@ -1,0 +1,100 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-4 mb-5">
+  <div class="col-12">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold mb-1">
+          <i class="fa-solid fa-heart text-danger me-2"></i>My Saved Materials
+        </h2>
+        <p class="text-muted mb-0">Bookmark and track surplus materials you are interested in purchasing.</p>
+      </div>
+
+      <a href="<%= basePath %>/listing" class="btn btn-outline-dark rounded-pill">
+        <i class="fa-solid fa-arrow-left me-1"></i> Browse More Materials
+      </a>
+    </div>
+
+    <!-- Wishlist Items Grid -->
+    <% if (!wishlistItems || wishlistItems.length === 0) { %>
+      <div class="text-center py-5 bg-white rounded-4 border my-4">
+        <div class="badge bg-danger-subtle text-danger p-3 rounded-circle fs-3 mb-3">
+          <i class="fa-regular fa-heart"></i>
+        </div>
+        <h4 class="fw-bold">Your Wishlist is Empty</h4>
+        <p class="text-muted">You haven't saved any surplus construction materials yet.</p>
+        <a href="<%= basePath %>/listing" class="btn btn-primary-action px-4 py-2">
+          Explore Available Surplus
+        </a>
+      </div>
+    <% } else { %>
+      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+        <% for (let listing of wishlistItems) { 
+            let discount = 0;
+            if (listing.originalPrice && listing.originalPrice > listing.price) {
+              discount = Math.round(((listing.originalPrice - listing.price) / listing.originalPrice) * 100);
+            }
+        %>
+          <div class="col">
+            <div class="card material-card">
+              <div class="card-img-wrapper">
+                <img src="<%= listing.image ? listing.image.url : 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=60' %>" class="material-img" alt="<%= listing.title %>">
+                
+                <span class="condition-badge">
+                  <i class="fa-solid fa-shield-halved me-1"></i><%= listing.condition || 'Surplus' %>
+                </span>
+
+                <% if (discount > 0) { %>
+                  <span class="discount-badge">
+                    <%= discount %>% OFF
+                  </span>
+                <% } %>
+
+                <form method="POST" action="<%= basePath %>/listing/<%= listing._id %>/wishlist" class="d-inline">
+                  <button type="submit" class="wishlist-btn-corner active" title="Remove from Saved">
+                    <i class="fa-solid fa-heart"></i>
+                  </button>
+                </form>
+              </div>
+
+              <div class="material-card-body">
+                <div class="material-category-tag">
+                  <%= listing.category || 'Surplus' %>
+                </div>
+
+                <a href="<%= basePath %>/listing/<%= listing._id %>" class="listing-card-link">
+                  <h5 class="material-card-title" title="<%= listing.title %>">
+                    <%= listing.title %>
+                  </h5>
+                </a>
+
+                <div class="material-specs-inline">
+                  <span class="spec-badge">
+                    <i class="fa-solid fa-boxes-stacked me-1"></i><%= listing.quantity %> <%= listing.unit || 'Units' %>
+                  </span>
+                  <span class="text-muted small">Available</span>
+                </div>
+
+                <div class="location-text">
+                  <i class="fa-solid fa-location-dot text-danger"></i>
+                  <span class="text-truncate"><%= listing.location %>, <%= listing.country %></span>
+                </div>
+
+                <div class="price-section">
+                  <div>
+                    <span class="price-main">&#8377;<%= listing.price != null ? listing.price.toLocaleString("en-IN") : "0" %></span>
+                    <span class="price-unit">/ <%= listing.unit ? listing.unit.slice(0, -1) : 'unit' %></span>
+                  </div>
+                  <a href="<%= basePath %>/listing/<%= listing._id %>" class="btn btn-sm btn-outline-dark rounded-pill fw-semibold">
+                    View Specs
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
