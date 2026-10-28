@@ -26,8 +26,41 @@ const apiRouter = require("./Routes/api.js");
 
 const dbUrl= process.env.ATLASDB_URL;
 
+const isProduction = process.env.NODE_ENV === "production";
+if (isProduction) {
+  app.set("trust proxy", 1);
+}
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:3000",
+  "http://localhost:3001",
+];
+
+if (process.env.FRONTEND_URL) {
+  process.env.FRONTEND_URL.split(",").forEach((u) => {
+    const trimmed = u.trim();
+    if (trimmed && !allowedOrigins.includes(trimmed)) {
+      allowedOrigins.push(trimmed);
+    }
+  });
+}
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000", "http://localhost:3001"],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith(".vercel.app") ||
+      origin.endsWith(".netlify.app") ||
+      origin.endsWith(".onrender.com") ||
+      !isProduction
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
 
@@ -73,18 +106,19 @@ store.on("error",(err) =>{
   console.log("ERROR in MONGO SESSION STORE",err);
 })
 
-const sessionOption ={
+const sessionOption = {
   store,
-  secret:process.env.SECRET,
+  secret: process.env.SECRET || "rebuildxsecretkey",
   resave: false,
-  saveUninitialized: true,
-  cookie:{
-    expires: Date.now() + 7*24*60*60*1000,
-    maxAge: 7*24*60*60*1000,
+  saveUninitialized: false,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-  }
-
-}
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
+  },
+};
 
 app.use(session(sessionOption));
 
