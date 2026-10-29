@@ -164,7 +164,7 @@ const ListingDetail = () => {
           {/* Left Column: Media & Specifications */}
           <div>
             {/* Title & Metadata */}
-            <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.3, marginBottom: '0.5rem' }}>
+            <h1 className="detail-title" style={{ fontWeight: 800, color: '#0f172a', lineHeight: 1.3, marginBottom: '0.5rem' }}>
               {listing.title}
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', color: '#64748b', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
@@ -198,7 +198,7 @@ const ListingDetail = () => {
             </div>
 
             {/* Specifications Card */}
-            <div style={{ background: 'white', borderRadius: '1rem', border: '1px solid #e2e8f0', padding: '1.5rem', marginTop: '1.5rem' }}>
+            <div className="detail-spec-card" style={{ background: 'white', borderRadius: '1rem', border: '1px solid #e2e8f0', marginTop: '1.5rem' }}>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem' }}>
                 Material Specifications
               </h3>

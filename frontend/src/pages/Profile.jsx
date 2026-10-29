@@ -208,10 +208,8 @@ const Profile = () => {
           </div>
 
           {/* Activity Metrics Bar */}
-          <div
+          <div className="profile-stats-grid"
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
               gap: '1rem',
               background: '#f8fafc',
               border: '1px solid #e2e8f0',
@@ -242,7 +240,7 @@ const Profile = () => {
           </div>
 
           {/* Navigation Tabs */}
-          <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', marginBottom: '1.75rem', gap: '0.5rem' }}>
+          <div className="profile-tabs-wrapper" style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', marginBottom: '1.75rem', gap: '0.5rem' }}>
             <button
               onClick={() => setActiveTab('general')}
               style={{

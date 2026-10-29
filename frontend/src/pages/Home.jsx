@@ -105,8 +105,8 @@ const Home = () => {
               <p className="hero-subtitle">
                 Buy and sell surplus construction materials — steel, cement, bricks, tiles, electrical, plumbing — directly from verified builders and contractors at up to 50% discount.
               </p>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <Link to="/listing/new" className="btn-primary" style={{ padding: '0.75rem 1.5rem', fontSize: '0.95rem' }}>
+              <div className="hero-btn-group" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <Link to="/listing/new" className="btn-primary hero-btn-main" style={{ padding: '0.75rem 1.5rem', fontSize: '0.95rem' }}>
                   Post Your Surplus Material <ArrowRight size={18} />
                 </Link>
                 <a href="#marketplace-grid" className="btn-outline" style={{ padding: '0.75rem 1.25rem', background: 'rgba(255,255,255,0.1)', color: 'white', borderColor: 'rgba(255,255,255,0.2)' }}>
@@ -122,7 +122,7 @@ const Home = () => {
           <div className="filter-bar">
             {/* Left side: Heading & Item Count */}
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h2 className="marketplace-heading" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 {activeCategory !== 'All' ? activeCategory : 'All Available Surplus Materials'}
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#64748b', background: '#f1f5f9', padding: '0.2rem 0.6rem', borderRadius: '9999px' }}>
                   {listings.length} items

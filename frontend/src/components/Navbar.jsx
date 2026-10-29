@@ -41,7 +41,7 @@ const Navbar = ({ onSearch }) => {
             </div>
             <div>
               <span>ReBuild<span style={{ color: '#15803d' }}>X</span></span>
-              <span style={{ display: 'block', fontSize: '0.65rem', fontWeight: 600, color: '#64748b', marginTop: '-4px' }}>
+              <span className="brand-subtext" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 600, color: '#64748b', marginTop: '-4px' }}>
                 Reuse Marketplace
               </span>
             </div>
@@ -62,9 +62,9 @@ const Navbar = ({ onSearch }) => {
           {/* Right Action Items */}
           <div className="nav-actions">
             {/* Post Surplus CTA */}
-            <Link to="/listing/new" className="btn-primary">
+            <Link to="/listing/new" className="btn-primary nav-post-btn" title="Post Surplus Material">
               <PlusCircle size={18} />
-              <span>Post Surplus</span>
+              <span className="nav-btn-text">Post Surplus</span>
             </Link>
 
             {/* Saved Wishlist Button */}
@@ -78,7 +78,7 @@ const Navbar = ({ onSearch }) => {
               <div style={{ position: 'relative' }}>
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}
-                  className="btn-outline"
+                  className="btn-outline nav-user-btn"
                   style={{ gap: '0.6rem' }}
                 >
                   <div
@@ -97,8 +97,8 @@ const Navbar = ({ onSearch }) => {
                   >
                     {user.username.charAt(0).toUpperCase()}
                   </div>
-                  <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{user.username}</span>
-                  <ChevronDown size={14} color="#64748b" />
+                  <span className="nav-user-name" style={{ fontWeight: 700, fontSize: '0.85rem' }}>{user.username}</span>
+                  <ChevronDown size={14} color="#64748b" className="nav-user-chevron" />
                 </button>
 
                 {showDropdown && (
@@ -216,14 +216,14 @@ const Navbar = ({ onSearch }) => {
                 )}
               </div>
             ) : (
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div className="nav-auth-btns" style={{ display: 'flex', gap: '0.5rem' }}>
                 <Link to="/login" className="btn-outline">
                   <LogIn size={16} />
-                  <span>Log in</span>
+                  <span className="nav-btn-text">Log in</span>
                 </Link>
                 <Link to="/signup" className="btn-primary" style={{ padding: '0.55rem 1rem' }}>
                   <UserPlus size={16} />
-                  <span>Sign up</span>
+                  <span className="nav-btn-text">Sign up</span>
                 </Link>
               </div>
             )}
